@@ -2,109 +2,80 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Primera pagina web</title>
+  <title>Mi Portafolio</title>
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #000;
+      background-image: url("fondo.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: white;
+      font-family: Arial, sans-serif;
       text-align: center;
+      margin: 0;
+    }
+
+    /* Capa oscura para mejorar lectura */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .container {
+      margin-top: 50px;
+      padding: 20px;
+      border-top: 3px solid red;
+      border-bottom: 3px solid red;
     }
 
     h1 {
+      color: red;
+    }
+
+    p {
+      font-size: 20px;
+    }
+
+    img {
       margin-top: 20px;
-    }
-
-    #videos {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .video {
-      background: #111;
-      border-radius: 12px;
-      width: 250px;
-      padding: 10px;
-      text-align: left;
-      box-shadow: 0 4px 15px rgba(255,255,255,0.1);
-      transition: transform 0.2s;
-    }
-
-    .video:hover {
-      transform: scale(1.05);
-    }
-
-    .video img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    .video p {
-      font-size: 14px;
-      margin-top: 8px;
-      color: #ddd;
+      width: 150px;
     }
 
     a {
+      color: red;
       text-decoration: none;
-      color: inherit;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>Videos de Ratatin Gaming 🐁🧀</h1>
+  <div class="container">
+    <h1>hola mundo jeje</h1>
+    
+    <p>Visca el Barça</p>
 
-  <div id="videos">Cargando videos...</div>
+    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Escudo Barcelona">
 
-  <script>
-    async function cargarVideos() {
-      const channelID = "UCb7O8oFYdezJdvoGKqPG2SQ";
-      const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelID}`;
-
-      try {
-        const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(url));
-        const xmlText = await res.text();
-
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(xmlText, "text/xml");
-
-        const entries = xml.getElementsByTagName("entry");
-
-        let html = "";
-
-        for (let i = 0; i < Math.min(entries.length, 6); i++) {
-          const videoId = entries[i].getElementsByTagName("yt:videoId")[0].textContent;
-          const title = entries[i].getElementsByTagName("title")[0].textContent;
-
-          const link = `https://www.youtube.com/watch?v=${videoId}`;
-          const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-
-          html += `
-            <a href="${link}" target="_blank">
-              <div class="video">
-                <img src="${thumbnail}">
-                <p>${title}</p>
-              </div>
-            </a>
-          `;
-        }
-
-        document.getElementById("videos").innerHTML = html;
-
-      } catch (error) {
-        document.getElementById("videos").innerText = "Error cargando videos 😢";
-        console.error(error);
-      }
-    }
-
-    cargarVideos();
-  </script>
+    <p style="margin-top: 30px;">
+      me gusta 
+      <a href="https://www.youtube.com/@RatatinGaming" target="_blank">
+        ratatin gaming
+      </a>
+    </p>
+  </div>
 
 </body>
 </html>
