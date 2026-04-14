@@ -16,31 +16,21 @@
       margin: 0;
     }
 
-    /* Capa oscura para mejorar lectura */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: -1;
-    }
-
     .container {
       margin-top: 50px;
       padding: 20px;
-      border-top: 3px solid red;
-      border-bottom: 3px solid red;
     }
 
     h1 {
-      color: red;
+      font-size: 32px;
     }
 
     p {
       font-size: 20px;
+      background: rgba(0,0,0,0.5);
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 8px;
     }
 
     img {
@@ -49,13 +39,43 @@
     }
 
     a {
-      color: red;
-      text-decoration: none;
+      color: white;
       font-weight: bold;
+      text-decoration: underline;
     }
 
-    a:hover {
-      text-decoration: underline;
+    /* VIDEOS */
+    #videos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 40px;
+    }
+
+    .video {
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      width: 250px;
+      padding: 10px;
+      text-align: left;
+      transition: transform 0.2s;
+    }
+
+    .video:hover {
+      transform: scale(1.05);
+    }
+
+    .video img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .video p {
+      font-size: 14px;
+      margin-top: 8px;
+      background: none;
+      padding: 0;
     }
   </style>
 </head>
@@ -63,11 +83,13 @@
 <body>
 
   <div class="container">
-    <h1>hola mundo jeje</h1>
+    <h1>mi primera pagina web cfff</h1>
     
     <p>Visca el Barça</p>
 
-    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Escudo Barcelona">
+    <br>
+
+    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg">
 
     <p style="margin-top: 30px;">
       me gusta 
@@ -76,6 +98,54 @@
       </a>
     </p>
   </div>
+
+  <h2>videos de ratatin gaming 🐁 🧀</h2>
+
+  <div id="videos">Cargando videos...</div>
+
+  <script>
+    async function cargarVideos() {
+      const channelID = "UCb7O8oFYdezJdvoGKqPG2SQ";
+      const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelID}`;
+
+      try {
+        const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(url));
+        const xmlText = await res.text();
+
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlText, "text/xml");
+
+        const entries = xml.getElementsByTagName("entry");
+
+        let html = "";
+
+        for (let i = 0; i < Math.min(entries.length, 6); i++) {
+          const videoId = entries[i].getElementsByTagName("yt:videoId")[0].textContent;
+          const title = entries[i].getElementsByTagName("title")[0].textContent;
+
+          const link = `https://www.youtube.com/watch?v=${videoId}`;
+          const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+
+          html += `
+            <a href="${link}" target="_blank">
+              <div class="video">
+                <img src="${thumbnail}">
+                <p>${title}</p>
+              </div>
+            </a>
+          `;
+        }
+
+        document.getElementById("videos").innerHTML = html;
+
+      } catch (error) {
+        document.getElementById("videos").innerText = "Error cargando videos 😢";
+        console.error(error);
+      }
+    }
+
+    cargarVideos();
+  </script>
 
 </body>
 </html>
